@@ -62,7 +62,7 @@ class Multiselect extends Field implements RelatableField
         if (empty($path)) throw new Exception('Multiselect requires apiUrl, none provided.');
 
         $this->resolveUsing(function ($value) use ($resourceClass) {
-            $this->options([]);
+//            $this->options([]);
             $value = array_values((array)$value);
 
             if (empty($value)) return $value;
@@ -72,13 +72,13 @@ class Multiselect extends Field implements RelatableField
                 $value = collect($value)->flatten(1)->toArray();
             }
 
-            try {
-                $modelObj = $resourceClass::newModel();
-                $models = $modelObj::whereIn($modelObj->getKeyName(), $value)->get();
-
-                $this->setOptionsFromModels($models, $resourceClass);
-            } catch (Exception $e) {
-            }
+//            try {
+//                $modelObj = $resourceClass::newModel();
+//                $models = $modelObj::whereIn($modelObj->getKeyName(), $value)->get();
+//
+//                $this->setOptionsFromModels($models, $resourceClass);
+//            } catch (Exception $e) {
+//            }
 
             return $value;
         });
