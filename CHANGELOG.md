@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.13] - 2021-12-13
+
+### Changed
+
+- Improved error handling when invalid relationship is provided to belongsToMany
+- Updated packages
+
+## [2.3.12] - 2021-11-12
+
+### Changed
+
+- Fixed legacy support (for Nova versions under 3.25)
+- Updated packages
+
+## [2.3.11] - 2021-10-20
+
+### Changed
+
+- Fixed legacy support (correctly this time)
+
+## [2.3.10] - 2021-10-19
+
+### Changed
+
+- Fixed legacy support (correctly this time)
+
+## [2.3.9] - 2021-10-19
+
+### Changed
+
+- Fixed legacy support for belongsTo associatable query (3.26.1 or earlier)
+
 ## [2.3.8] - 2021-10-06
 
 ### Changed

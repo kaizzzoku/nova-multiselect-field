@@ -4,10 +4,8 @@ namespace OptimistDigital\MultiselectField\Traits;
 
 use RuntimeException;
 use Laravel\Nova\Nova;
-use Laravel\Nova\Util;
 use Illuminate\Support\Str;
 use Laravel\Nova\TrashedStatus;
-use Laravel\Nova\Contracts\QueryBuilder;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\FormatsRelatableDisplayValues;
 
@@ -94,6 +92,7 @@ trait MultiselectBelongsToSupport
         $this->resolveUsing(function ($value) use ($async, $resourceClass) {
             if ($async) $this->associatableResource($resourceClass);
 
+            $value = $value ?? collect();
             $request = app(NovaRequest::class);
             $model = $resourceClass::newModel();
 
@@ -147,7 +146,9 @@ trait MultiselectBelongsToSupport
             [$resourceClass = $this->resourceClass, 'newModel']
         );
 
-        $query = app()->make(QueryBuilder::class, [$resourceClass]);
+        $query = Nova::version() >= '3.26.1'
+            ? app()->make('Laravel\Nova\Contracts\QueryBuilder', [$resourceClass])
+            : new \Laravel\Nova\Query\Builder($resourceClass);
 
         $request->first === 'true'
             ? $query->whereKey($model->newQueryWithoutScopes(), $request->current)
@@ -204,11 +205,15 @@ trait MultiselectBelongsToSupport
      */
     public function formatAssociatableResource(NovaRequest $request, $resource)
     {
+        $value = Nova::version() >= '3.25.0'
+            ? \Laravel\Nova\Util::safeInt($resource->getKey())
+            : $resource->getKey();
+
         return array_filter([
             'avatar' => $resource->resolveAvatarUrl($request),
             'display' => $this->formatDisplayValue($resource),
             'subtitle' => $resource->subtitle(),
-            'value' => Util::safeInt($resource->getKey()),
+            'value' => $value,
         ]);
     }
 
